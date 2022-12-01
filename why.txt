@@ -1,0 +1,90 @@
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class lab3pra {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\4426\\Desktop\\New folder\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		String Url="https://omayo.blogspot.in/";
+		driver.get(Url);
+		Actions action = new Actions(driver);
+		WebElement Box_1=driver.findElement(By.xpath("//textarea[@id='ta1']"));
+		action.sendKeys(Keys.PAGE_DOWN).build().perform();
+	    Box_1.sendKeys("Ramish is here.");
+	    
+	    //1b
+	    WebElement Box_2=driver.findElement(By.xpath("//h2[text()='Text Area Field Two']//following::textarea"));
+	    Box_2.clear();
+	    Box_2.sendKeys("Hey Welcome!");
+	    
+	    //table
+	    String innerText = driver.findElement(By.xpath("//table[@id='table1']")).getText(); 	
+	    System.out.println(innerText); 
+	    
+	    //login
+	    action.sendKeys(Keys.PAGE_DOWN).build().perform();
+		driver.findElement(By.xpath("//input[@type='text']")).sendKeys("nonope");
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("yesyup");
+		driver.findElement(By.xpath("//button[@value='LogIn']")).click();
+		Thread.sleep(3000);
+		
+		//frame
+		List<WebElement> frame = driver.findElements(By.xpath("//iframe[contains(@id,'iframe')]"));
+		driver.switchTo().frame(frame.get(1));
+		
+		// Back to Parent Frame, Then Found Frame-2 Using xpath and moved to it
+		driver.switchTo().parentFrame();
+		driver.switchTo().frame(frame.get(2));
+		
+		// Back to Parent Frame
+		driver.switchTo().parentFrame();
+		action.sendKeys(Keys.PAGE_DOWN).build().perform();
+		
+		//login again
+		
+		
+		driver.findElement(By.xpath("//input[@name='userid']")).sendKeys(" it iz");
+		driver.findElement(By.xpath("//input[@name='pswrd']")).sendKeys("beepboop");
+		
+
+		// Clicked login button using actions class and handled/accepted alert
+		WebElement login1 = driver.findElement(By.xpath("//input[@value='Login']"));
+		action.click(login1).perform();
+		//Thread.sleep(3000);
+		driver.switchTo().alert().accept();
+		
+		//dropdown
+		WebElement hyundai= driver.findElement(By.xpath("//option[@value='Hyundaix']"));
+		action.click(hyundai).perform();
+		
+		
+		// doc3
+		driver.findElement(By.xpath("//select[@id='drop1']")).click();
+		//action.click(oldNewsLetter).perform();
+		WebElement doc3 =driver.findElement(By.xpath("//option[@id='ironman4']"));
+		
+		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//option[@id='ironman4']")));
+		action.click(doc3).perform();
+		
+		WebElement Text_BOx = driver.findElement(By.xpath("//input[starts-with(@id,'textbox')]"));
+		action.sendKeys(Text_BOx, Keys.PAGE_DOWN).perform();
+		Text_BOx.clear();
+		Text_BOx.sendKeys("hello world");
+		
+				
+	}
+	
+
+}
