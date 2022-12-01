@@ -1,0 +1,234 @@
+package abc;
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class fgh {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Ramish\\Desktop\\eclipse\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+		driver.manage().window().maximize();
+		String Url="https://omayo.blogspot.in/";
+		driver.get(Url);
+		Actions action = new Actions(driver);
+		WebElement Box_1=driver.findElement(By.xpath("//textarea[@id='ta1']"));
+		action.sendKeys(Keys.PAGE_DOWN).build().perform();
+	    Box_1.sendKeys("Ramish is here.");
+	    
+	    //1b
+	    WebElement Box_2=driver.findElement(By.xpath("//h2[text()='Text Area Field Two']//following::textarea"));
+	    Box_2.clear();
+	    Box_2.sendKeys("Hey Welcome!");
+	    
+	    //table
+	    String innerText = driver.findElement(By.xpath("//table[@id='table1']")).getText(); 	
+	    System.out.println(innerText); 
+	    
+	    //login
+	    action.sendKeys(Keys.PAGE_DOWN).build().perform();
+		driver.findElement(By.xpath("//input[@type='text']")).sendKeys("nonope");
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("yesyup");
+		driver.findElement(By.xpath("//button[@value='LogIn']")).click();
+		Thread.sleep(3000);
+		
+		//frame
+		List<WebElement> frame = driver.findElements(By.xpath("//iframe[contains(@id,'iframe')]"));
+		driver.switchTo().frame(frame.get(1));
+		
+		// Back to Parent Frame, Then Found Frame-2 Using xpath and moved to it
+		driver.switchTo().parentFrame();
+		driver.switchTo().frame(frame.get(2));
+		
+		// Back to Parent Frame
+		driver.switchTo().parentFrame();
+		action.sendKeys(Keys.PAGE_DOWN).build().perform();
+		
+		//login again
+		
+		
+		driver.findElement(By.xpath("//input[@name='userid']")).sendKeys(" it iz");
+		driver.findElement(By.xpath("//input[@name='pswrd']")).sendKeys("beepboop");
+		
+
+		// Clicked login button using actions class and handled/accepted alert
+		WebElement login1 = driver.findElement(By.xpath("//input[@value='Login']"));
+		action.click(login1).perform();
+		//Thread.sleep(3000);
+		driver.switchTo().alert().accept();
+		
+		//dropdown
+		WebElement hyundai= driver.findElement(By.xpath("//option[@value='Hyundaix']"));
+		action.click(hyundai).perform();
+		Thread.sleep(3000);
+		
+		// doc3
+		WebElement oldNewsLetter = driver.findElement(By.xpath("//select[starts-with(@id,'drop')]"));
+		action.clickAndHold(oldNewsLetter).perform();
+		
+		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait1.until(ExpectedConditions
+				.visibilityOfElementLocated(By.xpath("//select[starts-with(@id,'drop')]//option[@value='jkl']")));
+		
+		driver.findElement(By.xpath("//select[starts-with(@id,'drop')]//option[@value='jkl']")).click();
+
+		// Cleared Pre-loaded Textbox and entered hello world
+		WebElement tb1 = driver.findElement(By.xpath("//input[starts-with(@id,'textbox')]"));
+		action.sendKeys(tb1, Keys.PAGE_DOWN).perform();
+		tb1.clear();
+		tb1.sendKeys("hello world");
+		
+		//........................................................
+		
+		// Clicked on Enabled Button/Button2
+				
+				driver.findElement(By.xpath("//button[@id='but2']")).click();
+				Thread.sleep(3000);
+				
+				
+				// Clicked on All three buttons
+				// Submit
+				
+				driver.findElement(By.xpath("//button[text()='Submit']")).click();
+				Thread.sleep(3000);
+				// Login
+				
+				driver.findElement(By.xpath("//button[text()='Login']")).click();
+				Thread.sleep(3000);
+				
+				// Register
+				
+				driver.findElement(By.xpath("//button[text()='Register']")).click();
+				Thread.sleep(3000);
+				
+				// Clicked 'ClickAfterTextDisappears' Button
+				// Handled Alert
+				driver.findElement(By.xpath("//input[@value='ClickAfterTextDissappears']")).click();
+				driver.switchTo().alert().accept();
+				Thread.sleep(3000);
+				
+				// Clicked on open a new popup window anchor
+				//driver.findElement(By.xpath("//a[text()='Open a popup window']")).click();
+				
+		
+		
+		
+				// Clicked on try it button
+				WebElement tryItButton = driver.findElement(By.xpath("//button[text()='Try it']"));
+				action.sendKeys(Keys.PAGE_DOWN).perform();
+				action.click(tryItButton).perform();
+				Thread.sleep(3000);
+				
+				// Double Clicked Using Actions 'Double Click Here' Button and Handled Alert
+				WebElement dblClickHere= driver.findElement(By.xpath("//button[text()=' Double click Here   ']"));
+				action.doubleClick(dblClickHere).perform();
+				driver.switchTo().alert().accept();
+				Thread.sleep(3000);
+				
+				// Used Actions to click 'Check This' Button
+				WebElement checkThisButton = driver.findElement(By.xpath("//button[text()='Check this']"));
+				action.click(checkThisButton).perform();
+				Thread.sleep(3000);
+				
+				// Waited for Checkbox 'Mr Option' to be clickable and then clicked it
+				WebElement mrOptionCheckBox = wait1.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@id='dte']")));
+				
+				if (!mrOptionCheckBox.isSelected()) {
+					action.click(mrOptionCheckBox).perform();
+				}
+
+				// Selected Gender
+				WebElement maleRadio = driver.findElement(By.xpath("//input[@value='male']"));
+				action.click(maleRadio).perform();
+
+				// Clicked 'ClickToGetAlert' Button and Handled Alert
+				WebElement clickToGetAlert = driver.findElement(By.xpath("//input[@value='ClickToGetAlert']"));
+				action.click(clickToGetAlert).perform();
+				driver.switchTo().alert().accept();
+				
+				// Unchecked Orange Checkbox
+				WebElement orangeCheckBox = driver.findElement(By.xpath("//input[@value='orange']"));
+				if (orangeCheckBox.isSelected()) {
+					action.click(orangeCheckBox).perform();
+				}
+
+				// Checked Blue Checkbox
+				WebElement blueCheckBox= driver.findElement(By.xpath("//input[@value='blue']"));
+				if (!blueCheckBox.isSelected()) {
+					action.click(blueCheckBox).perform();
+				}
+
+				// Read 'ReadThisText' from text box and printed it
+				WebElement readThisText = driver.findElement(By.xpath("//input[@id='rotb']"));
+				System.out.println("Textbox Has Contents: " + readThisText.getAttribute("value"));
+				System.out.println();
+
+				// Clicked on 'Get Prompt' Button and handled alert
+				WebElement getPrompt= driver.findElement(By.xpath("//input[@id='prompt']"));
+				action.click(getPrompt).perform();
+				driver.switchTo().alert().sendKeys("Foxi it iz");
+				driver.switchTo().alert().accept();
+
+				// Clicked 'Get Confirmation' Button and Handled Alert
+				WebElement getConfirmation = driver.findElement(By.xpath("//input[@id='confirm']"));
+				action.click(getConfirmation).build().perform();
+				driver.switchTo().alert().accept();
+				
+				// Filled text boxes below
+				driver.findElement(By.xpath("//input[@name='textboxn']")).sendKeys("Dummy Text");
+
+				driver.findElement(By.xpath(
+						"//h2[text()='Locate using class']//following-sibling::div//input"))
+						.sendKeys("Dummy Data 1");
+				driver.findElement(By.xpath(
+						"//h2[text()='element having same class name of above field']//following-sibling::div//input"))
+						.sendKeys("Dummy Data 2");
+				
+				// Clicked Car Radio Button
+				WebElement car = driver.findElement(By.xpath("//input[@value='Car']"));
+				action.click(car).perform();
+
+				// Clicked Book Checkbox
+				WebElement book = driver.findElement(By.xpath("//input[@value='Book']"));
+				if (book.isSelected()) {
+					action.click(book).perform();
+				}
+
+				// Clicked Laptop Checkbox
+				WebElement laptop = driver.findElement(By.xpath("//input[@value='Laptop']"));
+				if (!laptop.isSelected()) {
+					action.click(laptop).perform();
+				}
+
+				// Clicked Bag Checkbox
+				WebElement bag = driver.findElement(By.xpath("//input[@value='Bag']"));
+				if (!bag.isSelected()) {
+					action.click(bag).perform();
+				}
+
+				// Clicked 'Drop' Button
+				WebElement dropDownButton = driver.findElement(By.xpath("//button[@class='dropbtn']"));
+				action.click(dropDownButton).perform();
+				
+				// Waited for drop down element to appear and clicked gmail
+				WebElement gmailLink = wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='http://gmail.com/']")));
+				action.click(gmailLink).perform();
+
+				// ...END...
+
+				Thread.sleep(2000);
+				driver.quit();
+	}
+	
+
+}
+
+	
