@@ -1,0 +1,199 @@
+package weekendproject1;
+
+import java.awt.Desktop.Action;
+import java.time.Duration;
+import java.util.UUID;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.github.javafaker.Faker;
+
+public class StartTrello {
+	public String BaseUrl = "https://trello.com/";
+	public WebDriver driver;
+	public WebDriverWait wait;
+	public Faker faker;
+	public  String winHan;
+	public Actions actions;
+	public String Expected="" ,Actual="";
+	
+	@BeforeTest
+	public void Main() {
+		System.setProperty("Webdriver.chrome.driver", "C:\\Users\\Ramish\\Desktop\\eclipse\\chromedriver.exe");
+		driver = new ChromeDriver();		
+		driver.get(BaseUrl);
+		driver.manage().window().maximize();
+		
+		//Create objects
+		actions = new Actions(driver);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));						
+	}
+	
+	
+	//Quick Access Funtion
+	public  WebElement WaitXpath(String xpath) {
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+		return element;
+		}
+	
+	public void ActionsClick(WebElement element) {
+		actions.click(element).perform();		
+	}
+	
+	public void SubmitButtonClick() {
+		WebElement submitBut = WaitXpath("//button[@type='submit']");
+		ActionsClick(submitBut);
+	}
+	
+	
+	@Test(priority=0)
+	public void login() {
+		WebElement Login = WaitXpath("//a[text()='Log in']");
+		ActionsClick(Login);
+	
+		WebElement Email = WaitXpath("//input[@placeholder='Enter email']");
+		Email.sendKeys("ramishshabbir1005@gmail.com");
+		WaitXpath("//input[@id='login']").click();
+			
+		WebElement Password = WaitXpath("//input[@name='password']");
+		Password.sendKeys("alquraish25");
+		SubmitButtonClick();
+		
+		WebElement getTextElem = WaitXpath("//h3[@class='boards-page-section-header-name']");
+		Actual = getTextElem.getText();
+		Expected="YOUR WORKSPACES";
+		Assert.assertEquals(Actual, Expected,"Not Loggedin Properly");		
+	}
+	
+	
+	@Test(priority=1)
+	public void CreateBoard() {
+		
+		WebElement Board = WaitXpath("//span[text()='Create new board']");
+		ActionsClick(Board);
+							
+		// Create an object of Faker class with default locale i.e ENG
+		Faker faker = new Faker();
+		WebElement Btitle = WaitXpath("//input[@data-testid='create-board-title-input']");
+		Btitle.sendKeys(faker.color().name());
+		
+		WebElement Cre_Board = WaitXpath("//button[text()='Create']");
+		ActionsClick(Cre_Board);
+		
+		WebElement getTextElem = WaitXpath("//h2[text()='Workspace views ']");
+		Actual = getTextElem.getText();
+		Expected="Workspace views";
+		Assert.assertEquals(Actual, Expected,"Board not created Properly");
+											
+	}
+	
+	@Test(priority=2)
+	public void makeList() {
+				
+		for(int i=0; i<2; i++){
+			String ListName = RandomStringUtils.randomAlphabetic(8);
+			WebElement Listname = WaitXpath("//input[@class='list-name-input']");
+			Listname.sendKeys(ListName);
+			
+			WebElement AddList = WaitXpath("//input[@value='Add list']");
+			ActionsClick(AddList);
+			
+       }
+		WebElement getTextElem = WaitXpath("//span[text()='Add another list']");
+		Actual = getTextElem.getText();
+		Expected="Add another list";
+		Assert.assertEquals(Actual, Expected,"Lists not created Properly");
+		
+		
+	}
+	
+	@AfterTest
+	public void CloseUrl() {
+		//driver.close();
+	}
+	
+}
+//int size = driver.findElements(By.tagName("iframe")).size();
+		//System.out.println(size);
+
+//String uuid = UUID.randomUUID().toString();
+		//String s = RandomStringUtils.randomAlphabetic(8);
+		//Now this uuid enter to your text box
+
+
+
+
+
+
+
+
+
+
+
+ <dependencies>
+  <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.6.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.6.1</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.2.3</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.2.3</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml-schemas</artifactId>
+    <version>4.1.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.19.0</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-collections4</artifactId>
+    <version>4.4</version>
+</dependency>
+<dependency>
+    <groupId>io.github.bonigarcia</groupId>
+    <artifactId>webdrivermanager</artifactId>
+    <version>5.3.1</version>
+</dependency>
+<dependency>
+    <groupId>com.github.javafaker</groupId>
+    <artifactId>javafaker</artifactId>
+    <version>0.12</version>
+</dependency>
+
+</dependencies>
